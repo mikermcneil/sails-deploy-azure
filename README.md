@@ -1,6 +1,10 @@
 # sails-deploy-azure
 
-This custom command for Sails deploys your app to any PaaS host like Azure, Heroku, EBS, etc. who implements a compatible strategy.
+The official Microsoft Azure deployment strategy for Sails.js.
+
+This deployment strategy for Sails deploys your app to Azure in minutes.
+
+Trying to figure out how this works? Read some more background [here](https://github.com/balderdashy/sails/pull/2667#issuecomment-75474760);
 
 
 ## Installation
