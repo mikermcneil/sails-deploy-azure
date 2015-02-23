@@ -14,6 +14,23 @@
     "azure"
   ],
   "author": "Mike McNeil",
+  "contributors": [
+    {
+      "name": "Felix Rieseberg",
+      "url": "http://www.felixrieseberg.com",
+      "email": "felix@felixrieseberg.com"
+    },
+    {
+      "name": "Steven Edouard",
+      "url": "http://www.stevenedouard.com",
+      "email": "steven.edouard1@gmail.com"
+    },
+    {
+      "name": "Mike McNeil",
+      "url": "http://michaelmcneil.com/",
+      "email": "customers@balderdash.co"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "lodash": "^3.3.0"
