@@ -4,7 +4,7 @@
   "description": "Deploy a Sails app to Azure (a strategy for sails-deploy).",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
+    "test": "node ./node_modules/mocha/bin/mocha"
   },
   "keywords": [
     "deploy",
@@ -23,6 +23,6 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:mikermcneil/sails-deploy-azure.git"
   }
 }
