@@ -33,7 +33,11 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "lodash": "^3.3.0"
+    "colors": "^1.0.3",
+    "lodash": "^3.3.0",
+    "node-spinner": "0.0.4",
+    "prompt": "^0.2.14",
+    "single-line-log": "^0.4.1"
   },
   "devDependencies": {
     "mocha": "^2.1.0"
