@@ -1,0 +1,28 @@
+{
+  "name": "sails-deploy-azure",
+  "version": "0.2.0",
+  "description": "Deploy a Sails app to Azure (a strategy for sails-deploy).",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
+  },
+  "keywords": [
+    "deploy",
+    "sails",
+    "sails.js",
+    "framework",
+    "azure"
+  ],
+  "author": "Mike McNeil",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^3.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
