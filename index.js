@@ -95,7 +95,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                     usernameCli = userInput.username;
                     passwordCli = userInput.password;
 
-                    return cb();
+                    return callback();
                   });
                 } else {
                   console.log('Website does not exists in account, trying to create...');
@@ -128,7 +128,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                         usernameCli = userInput.username;
                         passwordCli = userInput.password;
 
-                        return cb();
+                        return callback();
                       });
                     }
                   })
