@@ -35,6 +35,8 @@
   "dependencies": {
     "colors": "^1.0.3",
     "lodash": "^3.3.0",
+    "machinepack-azure": "^1.2.2",
+    "machinepack-zip": "^0.2.4",
     "node-spinner": "0.0.4",
     "prompt": "^0.2.14",
     "single-line-log": "^0.4.1"
