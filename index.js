@@ -36,12 +36,12 @@ module.exports = function sailsDeployAzure(inputs, cb) {
 
     if (sitenameCli && usernameCli && passwordCli) {
       // All three parameters given, assume that website already exists
-      deployToSite(sitenameCli, usernameCli, passwordCli);
+      deployToSite(sitenameCli, usernameCli, passwordCli, cb);
     } else if (sitenameCli) {
       // Only sitename given, check if it exists
       createSite(sitenameCli, function(err, result) {
         if (err) {return cb(err);}
-        deployToSite(result);
+        deployToSite(sitenameCli, usernameCli, passwordCli, cb);
       });
     } else {
       // Something went wrong
