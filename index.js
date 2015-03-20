@@ -89,6 +89,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                         description: "What is the deployment username?"
                       },
                       password: {
+                        hidden: true,
                         description: "What is the deployment password?"
                       }
                     }
@@ -122,6 +123,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                             description: "What is the deployment username?"
                           },
                           password: {
+                            hidden: true,
                             description: "What is the deployment password?"
                           }
                         }
