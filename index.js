@@ -14,10 +14,15 @@ var prompt = require('prompt');
 var colors = require('colors');
 
 module.exports = function sailsDeployAzure(inputs, cb) {
-  // `inputs.config` is provided with the raw config that Sails core gathered by running `rc`.
 
+  // Get the package.json so we can display current Azur edeploy version
+  var packageJson = require(path.resolve(__dirname, "package.json"));
+  // Display welcome message
+  console.log("Microsoft Azure".blue,"deploy v"+packageJson.version+" starting...");
   try {
 
+    // `inputs.config` is provided with the raw config that Sails core gathered by running `rc`.
+    //
     // If `config` is missing or invalid, bail out w/ an error
     // (we just throw an error w/ a helpful message, since the  catch() below will take care of it)
     if (!_.isObject(inputs.config)) {
