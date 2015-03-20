@@ -26,11 +26,11 @@ module.exports = function sailsDeployAzure(inputs, cb) {
     // If `config` is missing or invalid, bail out w/ an error
     // (we just throw an error w/ a helpful message, since the  catch() below will take care of it)
     if (!_.isObject(inputs.config)) {
-      throw new Error('Incomplete `config` provided to sails-deploy-azure! Expected `config` to exist and be an object.');
+      return cb(new Error('Incomplete `config` provided to sails-deploy-azure! Expected `config` to exist and be an object.'));
     }
 
     var ifa = (inputs.config.azure) ? inputs.config.azure : null,
-        sitenameCli = (ifa && ifa.sitename) ? ifa.sitename : require(path.resolve('./package.json')).name,
+        sitenameCli = (ifa && ifa.sitename) ? ifa.sitename : packageJson.name,
         usernameCli = (ifa && ifa.username) ? ifa.username : null,
         passwordCli = (ifa && ifa.password) ? ifa.password : null;
 
@@ -39,16 +39,19 @@ module.exports = function sailsDeployAzure(inputs, cb) {
       deployToSite(sitenameCli, usernameCli, passwordCli);
     } else if (sitenameCli) {
       // Only sitename given, check if it exists
-      createSite(sitenameCli, deployToSite)
+      createSite(sitenameCli, function(err, result) {
+        if (err) {return cb(err);}
+        deployToSite(result);
+      });
     } else {
       // Something went wrong
-      throw new Error('Deployment failed');
+      return cb(new Error('Deployment failed for unknown reason.'));
     }
 
     function createSite(sitename, callback) {
       Azure.checkActiveSubscription().exec({
         error: function (err){
-          throw new Error('Error checking for active subscription: ', err);
+          return cb(new Error(require('util').format('Error checking for active subscription: %s', err)));
         },
         success: function (isActive){
           (function (next){
@@ -64,14 +67,14 @@ module.exports = function sailsDeployAzure(inputs, cb) {
             });
           })(function afterwards(err){
             if (err) {
-              throw new Error('Error registering Azure account: ', err);
+              return cb(new Error(require('util').format('Error registering Azure account: %s', err)));
             }
 
             var createOptions = sitename ? {name: sitename} : {};
 
             Azure.existsWebsite(createOptions).exec({
               error: function (err) {
-                throw new Error('Error creating Website: ', err);
+                return cb(new Error(require('util').format('Error creating Website: %s', err)));
               },
               success: function (result) {
                 if (result) {
@@ -79,7 +82,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
 
                   var credentialsLink = 'https://manage.windowsazure.com/#Workspaces/WebsiteExtension/Website/' + sitename + '/dashboard';
                       credentialsLink = credentialsLink.underline.green;
-                      
+
                   console.log('You need to use deployment credentials. For security reasons, this step is manual.\n If not known, open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red);
                   prompt.start();
 
@@ -95,7 +98,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                     }
                   }, function (err, userInput) {
                     if (err) {
-                      throw new Error('Error prompting for deployment credentials: ', err);
+                      return cb(new Error(require('util').format('Error prompting for deployment credentials: %s', err)));
                     }
 
                     usernameCli = userInput.username;
@@ -104,10 +107,10 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                     return callback();
                   });
                 } else {
-                  console.log('Website does not exists in account, trying to create...');
+                  console.log('Website does not exist in account, trying to create...');
                   Azure.createWebsite(createOptions).exec({
                     error: function (err) {
-                      throw new Error('Error creating Website: ', err);
+                      return callback(require('util').format('Error creating Website: %s', err));
                     },
                     success: function () {
                       var credentialsLink = 'https://manage.windowsazure.com/#Workspaces/WebsiteExtension/Website/' + sitename + '/dashboard';
@@ -129,7 +132,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                         }
                       }, function (err, userInput) {
                         if (err) {
-                          throw new Error('Error prompting for deployment credentials: ', err);
+                          return cb(new Error(require('util').format('Error prompting for deployment credentials: %s', err)));
                         }
 
                         usernameCli = userInput.username;
@@ -138,10 +141,10 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                         return callback();
                       });
                     }
-                  })
+                  });
                 }
               }
-            })
+            });
           });
         }
       });
@@ -157,16 +160,16 @@ module.exports = function sailsDeployAzure(inputs, cb) {
         deploymentPassword: password,
         name: 'sailsdeploy.ps1',
         website: sitename
-      }
+      };
 
       console.log('Starting Deployment');
 
       // (1) Create ZIP package -----------------------------------------------------------
       zipSailsApp({}, {
         error: function (err) {
-          throw new Error('Creating ZIP package failed: ', err);
+          return callback(new Error(require('util').format('Creating ZIP package failed: %s', err)));
         },
-        success: function () { 
+        success: function () {
           console.log('ZIP package created.');
       // (2) Upload File ------------------------------------------------------------------
           Azure.uploadFile({
@@ -177,11 +180,11 @@ module.exports = function sailsDeployAzure(inputs, cb) {
             website: sitename
           }).exec({
             error: function (err) {
-              throw new Error('Uploading file failed: ', err);
+              return callback(new Error(require('util').format('Uploading file failed: %s', err)));
             },
             success: function () {
               console.log('Deployment package uploaded');
-      // (3) Upload Webjob ----------------------------------------------------------------  
+      // (3) Upload Webjob ----------------------------------------------------------------
               Azure.uploadWebjob({
                 deploymentUser: username,
                 deploymentPassword: password,
@@ -189,14 +192,14 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                 website: sitename
               }).exec({
                 error: function (err) {
-                  throw new Error('Uploading webjob failed: ', err);
+                  return callback(new Error(require('util').format('Uploading webjob failed: %s', err)));
                 },
                 success: function (result) {
                   console.log('Deployment script uploaded');
       // (4) Trigger Webjob ---------------------------------------------------------------
                   Azure.triggerWebjob(jobOptions).exec({
                     error: function (err) {
-                      throw new Error('Triggering webjob failed: ', err);
+                      return callback(new Error(require('util').format('Triggering webjob failed: %s', err)));
                     },
                     success: function () {
                       console.log('Deployment script started');
@@ -217,7 +220,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                               retryCounter = retryCounter + 1;
                               setTimeout(getLog, 800);
                             } else {
-                              throw new Error('Failed to fetch script status');
+                              return callback(new Error('Failed to fetch script status'));
                             }
                           },
                           success: function (scriptOutput) {
@@ -234,16 +237,16 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                               setTimeout(getLog, 400);
                             }
                           }
-                        })
-                      }
-                      
+                        });
+                      };
+
                       getLog();
                     }
-                  })
+                  });
                 }
-              })
+              });
             }
-          })
+          });
         }
       });
     }
