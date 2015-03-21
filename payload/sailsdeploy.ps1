@@ -1,15 +1,16 @@
-# Create full site backup --------------------------------------
+# Cleaning Folder ----------------------------------------------
 "Cleaning folder"
+
 Get-ChildItem -Path 'D:\home\site\wwwroot' -Recurse |
 Select -ExpandProperty FullName |
-Where {$_ -notlike 'D:\home\site\wwwroot\app_data'} |
+Where {$_ -notlike 'D:\home\site\wwwroot\app_data' -and $_ -notlike 'D:\home\site\wwwroot\node_modules'} |
 sort length -Descending |
-Remove-Item -Verbose
+Remove-Item
 
 # Unzip --------------------------------------------------------
 "Unzipping folder"
 cd "D:\home\site\temp"
-unzip -d D:\home\site\wwwroot deployment.zip
+unzip -o -d D:\home\site\wwwroot deployment.zip
 
 # NPM
 cd "D:\home\site\wwwroot"
