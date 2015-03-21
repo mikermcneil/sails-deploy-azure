@@ -16,9 +16,10 @@ var colors = require('colors');
 module.exports = function sailsDeployAzure(inputs, cb) {
 
   // Get the package.json so we can display current Azur edeploy version
-  var packageJson = require(path.resolve(__dirname, "package.json"));
+  var addonPackageJson = require(path.resolve(__dirname, 'package.json')),
+      appPackageJson = require(path.resolve(process.cwd(), 'package.json'))
   // Display welcome message
-  console.log("Microsoft Azure".blue,"deploy v"+packageJson.version+" starting...");
+  console.log('Microsoft Azure'.blue,'deploy v'+addonPackageJson.version+' starting...');
   try {
 
     // `inputs.config` is provided with the raw config that Sails core gathered by running `rc`.
@@ -30,7 +31,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
     }
 
     var ifa = (inputs.config.azure) ? inputs.config.azure : null,
-        sitenameCli = (ifa && ifa.sitename) ? ifa.sitename : packageJson.name,
+        sitenameCli = (ifa && ifa.sitename) ? ifa.sitename : appPackageJson.name,
         usernameCli = (ifa && ifa.username) ? ifa.username : null,
         passwordCli = (ifa && ifa.password) ? ifa.password : null;
 
@@ -116,7 +117,7 @@ module.exports = function sailsDeployAzure(inputs, cb) {
                       var credentialsLink = 'https://manage.windowsazure.com/#Workspaces/WebsiteExtension/Website/' + sitename + '/dashboard';
                       credentialsLink = credentialsLink.underline.green;
 
-                      console.log('Website ' + sitename + 'created.');
+                      console.log('Website ' + sitename + ' created.');
                       console.log('You need to use deployment credentials. For security reasons, this step is manual.\n If not known, open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red);
                       prompt.start();
 
