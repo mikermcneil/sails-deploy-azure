@@ -12,7 +12,7 @@ Trying to figure out how this works? Read some more background [here](https://gi
 In your sails app, run:
 
 ```js
-npm install sails-deploy-azure --save
+npm install sails-deploy-azure --save-dev
 ```
 
 And update your `.sailsrc` file to include:
