@@ -15,7 +15,7 @@ unzip -o -d D:\home\site\wwwroot\ deployment.zip
 # NPM
 cd "D:\home\site\wwwroot"
 "Running npm install (production)"
-npm install --production
+npm install --production --no-optional --no-bin-links
 
 # Cleanup ------------------------------------------------------
 "We're done, cleaning up!"
