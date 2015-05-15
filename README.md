@@ -9,7 +9,7 @@ Trying to figure out how this works? Read some more background [here](https://gi
 
 ## Installation
 
-In your sails app, run:
+Make sure you have the latest version of SailsJS. As of May 2015, you need to pull it directly from GitHub (balderdashy/sails). In your sails app, run:
 
 ```js
 npm install sails-deploy-azure --save-dev
@@ -18,8 +18,15 @@ npm install sails-deploy-azure --save-dev
 And update your `.sailsrc` file to include:
 
 ```json
-"deploy": {
-  "module": "sails-deploy-azure"
+{
+    "generators": {
+        "modules": {}
+    },
+    "commands": {
+        "deploy": {
+            "module": "sails-deploy-azure"
+        }
+    }
 }
 ```
 
