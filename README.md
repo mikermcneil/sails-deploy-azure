@@ -59,7 +59,7 @@ module.exports = {
     }
 },
 "azure": {
-    "sitename": "YOUR_SITENAME"
+    "sitename": "YOUR_SITENAME",
     "username": "YOUR_USER",
     "password": "YOUR_PASSWORD"
     }
