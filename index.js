@@ -318,6 +318,7 @@ function zipSailsApp(inputs, exits) {
       path.resolve(__dirname, './payload/web.config'),
       // Other Stuff
       path.resolve(appPath, 'README.md'),
+      path.resolve(appPath, '.tmp'),
       path.resolve(appPath, 'app.js'),
       path.resolve(appPath, '.sailsrc'),
       path.resolve(appPath, 'tasks'),
