@@ -35,7 +35,7 @@
   "dependencies": {
     "colors": "^1.0.3",
     "lodash": "^3.3.0",
-    "machinepack-azure": "mikermcneil/machinepack-azure#a9709465f4b653718bdab9b9038b48a666bdda7b",
+    "machinepack-azure": "^1.2.5",
     "machinepack-zip": "^0.2.4",
     "node-spinner": "0.0.4",
     "prompt": "^0.2.14",
